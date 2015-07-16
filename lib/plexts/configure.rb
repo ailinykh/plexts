@@ -39,9 +39,9 @@ module Plexts
             "v" => ENV["VERSION"]
         }.to_json
     end
-    def self.entities_params(lat, lng, zoom=20)
+    def self.entities_params(lat1, lng1, lat2, lng2, zoom=20)
         toSend = {
-            "tileKeys" => [get_mercator_tile(lat, lng, zoom)],
+            "tileKeys" => get_mercator_tiles(lat1, lng1, lat2, lng2, zoom),
             "v" => ENV["VERSION"]
         }.to_json
     end
