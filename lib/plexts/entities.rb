@@ -4,7 +4,7 @@ require 'json'
 
 module Plexts
 
-    ZOOM_TO_NUM_TILES_PER_EDGE = [64, 64, 64, 64, 256, 256, 256, 1024, 1024, 1536, 4096, 4096, 6500, 6500, 6500]
+    ZOOM_TO_NUM_TILES_PER_EDGE = [1,1,1,40,40,80,80,320,1000,2000,2000,4000,8000,16000,16000,32000]
 
     def self.get_entities(lat, lng, zoom=20)
         if !(lat.between?(-90, 90) && lng.between?(-180, 180))
