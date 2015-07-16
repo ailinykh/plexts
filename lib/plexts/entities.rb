@@ -24,7 +24,7 @@ module Plexts
         end
         # puts "Response #{res.code} #{res.message}: #{res.body}"
         json = JSON.parse(res.body)
-        JSON.pretty_generate(json)
+        # JSON.pretty_generate(json)
     end
 
     # parameter sample
@@ -36,7 +36,7 @@ module Plexts
     # 8: max portal level(0-8)
     # 100: max portal health (25, 50, 75, 100)
     def self.get_mercator_tiles(lat1, lng1, lat2, lng2 ,zoom=17, pMinLevel=0, pMaxLevel=8, maxHealth=100)
-        z = ZOOM_TO_NUM_TILES_PER_EDGE[zoom] || 9000
+        z = ZOOM_TO_NUM_TILES_PER_EDGE[zoom] || 32000
         lat1_tile = self.get_tile_for_lat(lat1, z)
         lat2_tile = self.get_tile_for_lat(lat2, z)
         lng1_tile = self.get_tile_for_lng(lng1, z)
@@ -48,11 +48,6 @@ module Plexts
             end
         end
         tiles
-
-        # lg = ((lng + 180) / 360 * z).to_i
-        # lt =  ((1 - Math.log(Math.tan(lat * Math::PI / 180) + 1 / Math.cos(lat * Math::PI / 180)) / Math::PI) / 2 * z).to_i
-        # tileKey = [zoom, lg, lt, pMinLevel, pMaxLevel, maxHealth].join('_')
-        # puts tileKey
     end
 
     def self.get_tile_for_lat(lat, z)
