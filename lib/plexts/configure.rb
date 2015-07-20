@@ -7,7 +7,7 @@ module Plexts
 
     def self.headers
         cookie = {
-            'GOOGAPPUID' => ENV["GOOG_APP_UID"],
+            # 'GOOGAPPUID' => ENV["GOOG_APP_UID"], # deprecated
             'csrftoken' => ENV["CSRF_TOKEN"],
             'SACSID' => ENV['SACS_ID']
         }
@@ -22,14 +22,15 @@ module Plexts
         }
     end
 
-    def self.plexts_params
+    def self.plexts_params(minLatE6, minLngE6, maxLatE6, maxLngE6, maxTimestampMs=-1, tab='all')
         toSend = {
-            "minLatE6" => ENV["MIN_LAT_E6"].to_i,
-            "minLngE6" => ENV["MIN_LNG_E6"].to_i,
-            "maxLatE6" => ENV["MAX_LAT_E6"].to_i,
-            "maxLngE6" => ENV["MAX_LNG_E6"].to_i,
-            "minTimestampMs" => ENV["MIN_TIMESTAMP_MS"].to_i,
-            "tab" => ENV["TAB"],
+            "minLatE6" => minLatE6.to_s.gsub(/\./, '').to_i,
+            "minLngE6" => minLngE6.to_s.gsub(/\./, '').to_i,
+            "maxLatE6" => maxLatE6.to_s.gsub(/\./, '').to_i,
+            "maxLngE6" => maxLngE6.to_s.gsub(/\./, '').to_i,
+            "minTimestampMs" => -1,
+            "maxTimestampMs" => maxTimestampMs,
+            "tab" => tab,
             "v" => ENV["VERSION"]
         }.to_json
     end

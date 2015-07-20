@@ -1,10 +1,10 @@
 
 module Plexts
 
-    def self.to_console()
+    def self.to_console(minLatE6, maxLatE6, minLngE6, maxLngE6, maxTimestampMs=-1, tab='all')
 
-        json = get_plexts
-        json["success"].reverse!.each do |plext| 
+        json = get_plexts(minLatE6, maxLatE6, minLngE6, maxLngE6, maxTimestampMs, tab)
+        json["result"].reverse!.each do |plext| 
             s = plext[1].to_s
             s = s[0, s.length - 3] 
 

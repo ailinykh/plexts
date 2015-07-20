@@ -6,10 +6,10 @@ module Plexts
 
     ZOOM_TO_NUM_TILES_PER_EDGE = [1,1,1,40,40,80,80,320,1000,2000,2000,4000,8000,16000,16000,32000]
 
-    # lat1, lng1: north west point
-    # lat2, lng2: south east point
-    def self.get_entities(lat1, lng1, lat2, lng2, zoom=20)
-        if !(lat1.between?(-90, 90) && lng1.between?(-180, 180)) || !(lat2.between?(-90, 90) && lng2.between?(-180, 180))
+    # minLatE6, minLngE6: south west point
+    # maxLatE6, maxLngE6: north east point
+    def self.get_entities(minLatE6, minLngE6, maxLatE6, maxLngE6, zoom=20)
+        if !(minLatE6.between?(-90, 90) && minLngE6.between?(-180, 180)) || !(maxLatE6.between?(-90, 90) && maxLngE6.between?(-180, 180))
             raise StandardError, "irregular parameter"
         end
         configure
@@ -17,7 +17,7 @@ module Plexts
         https = Net::HTTP.new(uri.host,uri.port)
         https.use_ssl = true
         req = Net::HTTP::Post.new(uri.path, headers )
-        req.body = entities_params(lat1, lng1, lat2, lng2, zoom)
+        req.body = entities_params(minLatE6, minLngE6, maxLatE6, maxLngE6, zoom)
         res = https.request(req)
         if !res.kind_of? Net::HTTPSuccess
             raise res.code + ":" + res.msg
@@ -35,15 +35,15 @@ module Plexts
     # 0: min portal level(0-8)
     # 8: max portal level(0-8)
     # 100: max portal health (25, 50, 75, 100)
-    def self.get_mercator_tiles(lat1, lng1, lat2, lng2 ,zoom=17, pMinLevel=0, pMaxLevel=8, maxHealth=100)
+    def self.get_mercator_tiles(minLatE6, minLngE6, maxLatE6, maxLngE6, zoom=17, pMinLevel=0, pMaxLevel=8, maxHealth=100)
         z = ZOOM_TO_NUM_TILES_PER_EDGE[zoom] || 32000
-        lat1_tile = self.get_tile_for_lat(lat1, z)
-        lat2_tile = self.get_tile_for_lat(lat2, z)
-        lng1_tile = self.get_tile_for_lng(lng1, z)
-        lng2_tile = self.get_tile_for_lng(lng2, z)
+        lat1_tile = self.get_tile_for_lat(minLatE6, z)
+        lat2_tile = self.get_tile_for_lat(maxLatE6, z)
+        lng1_tile = self.get_tile_for_lng(minLngE6, z)
+        lng2_tile = self.get_tile_for_lng(maxLngE6, z)
         tiles = []
         for x in lng1_tile..lng2_tile
-            for y in lat1_tile..lat2_tile
+            for y in lat2_tile..lat1_tile
                 tiles.push([zoom, x, y, pMinLevel, pMaxLevel, maxHealth].join('_'))
             end
         end
