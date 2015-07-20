@@ -1,4 +1,3 @@
-
 module Plexts
 
     def self.to_console(minLatE6, maxLatE6, minLngE6, maxLngE6, maxTimestampMs=-1, tab='all')
