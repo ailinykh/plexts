@@ -27,6 +27,22 @@ module Plexts
         # JSON.pretty_generate(json)
     end
 
+    def self.get_entities_from_tiles(tiles)
+        configure
+        uri = URI('https://www.ingress.com/r/getEntities')
+        https = Net::HTTP.new(uri.host,uri.port)
+        https.use_ssl = true
+        req = Net::HTTP::Post.new(uri.path, headers )
+        req.body = entities_params_with_tiles(tiles)
+        res = https.request(req)
+        if !res.kind_of? Net::HTTPSuccess
+            raise res.code + ":" + res.msg
+        end
+        # puts "Response #{res.code} #{res.message}: #{res.body}"
+        json = JSON.parse(res.body)
+        # JSON.pretty_generate(json)
+    end
+
     # parameter sample
     # 17_7994_3544_0_8_100
     # 17: zoom level

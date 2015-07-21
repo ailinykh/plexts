@@ -46,4 +46,10 @@ module Plexts
             "v" => ENV["VERSION"]
         }.to_json
     end
+    def self.entities_params_with_tiles(tiles)
+        toSend = {
+            "tileKeys" => tiles.shift(25),
+            "v" => ENV["VERSION"]
+        }.to_json
+    end
 end
