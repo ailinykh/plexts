@@ -1,0 +1,3 @@
+csrftoken: your_csrf_token_ftom_intel
+SACSID: sacsid_from_intel_cookies
+v: current_intel_dashboard_version

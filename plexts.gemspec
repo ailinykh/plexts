@@ -6,7 +6,7 @@ require 'plexts/version'
 Gem::Specification.new do |spec|
   spec.name          = "plexts"
   spec.version       = Plexts::VERSION
-  spec.authors       = ["tfunato"]
+  spec.authors       = ["tfunato", "ailinykh"]
   spec.email         = ["tfunato@gmail.com"]
   spec.summary       = %q{Ingress COMM API caller.}
   spec.description   = %q{Ingress COMM API caller.}
@@ -18,10 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "dotenv"
-
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
-  spec.add_development_dependency "pry"
 end
