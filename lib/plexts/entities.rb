@@ -1,7 +1,3 @@
-require 'net/http'
-require 'net/https'
-require 'json'
-
 module Plexts
 
     ZOOM_TO_NUM_TILES_PER_EDGE = [1,1,1,40,40,80,80,320,1000,2000,2000,4000,8000,16000,16000,32000]
@@ -12,35 +8,16 @@ module Plexts
         if !(minLatE6.between?(-90, 90) && minLngE6.between?(-180, 180)) || !(maxLatE6.between?(-90, 90) && maxLngE6.between?(-180, 180))
             raise StandardError, "irregular parameter"
         end
-        configure
-        uri = URI('https://www.ingress.com/r/getEntities')
-        https = Net::HTTP.new(uri.host,uri.port)
-        https.use_ssl = true
-        req = Net::HTTP::Post.new(uri.path, headers )
-        req.body = entities_params(minLatE6, minLngE6, maxLatE6, maxLngE6, zoom)
-        res = https.request(req)
-        if !res.kind_of? Net::HTTPSuccess
-            raise res.code + ":" + res.msg
-        end
-        # puts "Response #{res.code} #{res.message}: #{res.body}"
-        json = JSON.parse(res.body)
-        # JSON.pretty_generate(json)
+
+        tiles = get_mercator_tiles(minLatE6, minLngE6, maxLatE6, maxLngE6, zoom)
+        get_entities_from_tiles(tiles)
     end
 
     def self.get_entities_from_tiles(tiles)
-        configure
-        uri = URI('https://www.ingress.com/r/getEntities')
-        https = Net::HTTP.new(uri.host,uri.port)
-        https.use_ssl = true
-        req = Net::HTTP::Post.new(uri.path, headers )
-        req.body = entities_params_with_tiles(tiles)
-        res = https.request(req)
-        if !res.kind_of? Net::HTTPSuccess
-            raise res.code + ":" + res.msg
-        end
-        # puts "Response #{res.code} #{res.message}: #{res.body}"
-        json = JSON.parse(res.body)
-        # JSON.pretty_generate(json)
+        body = {
+            "tileKeys" => tiles,
+        }
+        get_intel_data('https://www.ingress.com/r/getEntities', body)
     end
 
     # parameter sample
