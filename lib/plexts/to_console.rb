@@ -3,49 +3,54 @@ module Plexts
     def self.to_console(minLatE6, maxLatE6, minLngE6, maxLngE6, maxTimestampMs=-1, tab='all')
 
         json = get_plexts(minLatE6, maxLatE6, minLngE6, maxLngE6, maxTimestampMs, tab)
-        json["result"].reverse!.each do |plext| 
-            s = plext[1].to_s
-            s = s[0, s.length - 3] 
+        
+        if json.has_key?('error')
+            puts json['error']
+        else
+            json["result"].reverse!.each do |plext| 
+                s = plext[1].to_s
+                s = s[0, s.length - 3] 
 
-            print Time.at(s.to_i).strftime("%Y-%m-%d %R | ")
-            text = ""
-            plext[2]["plext"]["markup"].each do |markups|
-                if markups[0] == "PLAYER"
-                    if markups[1]["team"] == "RESISTANCE"
-                        text << TermColor.blue
-                    elsif markups[1]["team"] == "ENLIGHTENED"
-                        text << TermColor.green
-                    end
-                    text << markups[1]["plain"]
-                    text << TermColor.reset
-                elsif markups[0] == "PORTAL" 
-                    if markups[1]["team"] == "RESISTANCE"
-                        text << TermColor.blue
-                    else
-                        text << TermColor.green
-                    end
-                    text << markups[1]["name"]
-                    text << TermColor.reset
-                    lat = markups[1]["latE6"]  / 1e6
-                    lag = markups[1]["lngE6"]  / 1e6
-                    text << " https://www.ingress.com/intel?ll=" + lat.to_s + "," + lag.to_s + "&z=19&pll=" + lat.to_s + "," + lag.to_s
-                elsif markups[0] == "TEXT" 
-                    if plext[2]["plext"]["categories"] == 4
-                        text << TermColor.red
+                print Time.at(s.to_i).strftime("%Y-%m-%d %R | ")
+                text = ""
+                plext[2]["plext"]["markup"].each do |markups|
+                    if markups[0] == "PLAYER"
+                        if markups[1]["team"] == "RESISTANCE"
+                            text << TermColor.blue
+                        elsif markups[1]["team"] == "ENLIGHTENED"
+                            text << TermColor.green
+                        end
                         text << markups[1]["plain"]
                         text << TermColor.reset
-                    else
+                    elsif markups[0] == "PORTAL" 
+                        if markups[1]["team"] == "RESISTANCE"
+                            text << TermColor.blue
+                        else
+                            text << TermColor.green
+                        end
+                        text << markups[1]["name"]
+                        text << TermColor.reset
+                        lat = markups[1]["latE6"]  / 1e6
+                        lag = markups[1]["lngE6"]  / 1e6
+                        text << " https://www.ingress.com/intel?ll=" + lat.to_s + "," + lag.to_s + "&z=19&pll=" + lat.to_s + "," + lag.to_s
+                    elsif markups[0] == "TEXT" 
+                        if plext[2]["plext"]["categories"] == 4
+                            text << TermColor.red
+                            text << markups[1]["plain"]
+                            text << TermColor.reset
+                        else
+                            text << markups[1]["plain"]
+                        end
+                    elsif markups[0] == "SECURE" 
                         text << markups[1]["plain"]
+                    elsif markups[0] == "SENDER" 
+                        text << TermColor.blue
+                        text << markups[1]["plain"]
+                        text << TermColor.reset
                     end
-                elsif markups[0] == "SECURE" 
-                    text << markups[1]["plain"]
-                elsif markups[0] == "SENDER" 
-                    text << TermColor.blue
-                    text << markups[1]["plain"]
-                    text << TermColor.reset
                 end
+                puts text
             end
-            puts text
         end
     end
 
