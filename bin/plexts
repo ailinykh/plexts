@@ -10,11 +10,13 @@ def cmd_line
     args = {}
     opts = OptionParser.new do |parser|
       parser.on('-c', '--console', 'show all or faction, aleart messages') {|v| args[:c] = v}
-      parser.on('-e', '--entity', 'show portals infomation of JSON format') {|v| args[:e] = v}
+      parser.on('-e', '--entity', 'show entities infomation of JSON format') {|v| args[:e] = v}
       parser.on('--minlat VALUE', 'south west area latitude') {|v| args[:lat1] = v}
       parser.on('--minlng VALUE', 'south west area longitude') {|v| args[:lng1] = v}
       parser.on('--maxlat VALUE', 'north east area latitude') {|v| args[:lat2] = v}
       parser.on('--maxlng VALUE', 'north east area longitude') {|v| args[:lng2] = v}
+      parser.on('-p', '--portal', 'show portal infomation of JSON format') {|v| args[:p] = v}
+      parser.on('--guid VALUE', 'portal guid') {|v| args[:guid] = v}
       parser.on('-z VALUE', 'map zoom level 1-20') {|v| args[:z] = v}
       parser.on('-a', '--artifacts', 'artifacts infomation of JSON format') {|v| args[:a] = v}
       parser.parse!(ARGV)
@@ -37,6 +39,8 @@ elsif args[:e]
     else
         Plexts.get_entities(args[:lat1].to_f, args[:lng1].to_f, args[:lat2].to_f, args[:lng2].to_f)
     end
+elsif args[:p]
+    Plexts.get_portal_details(args[:guid])
 elsif args[:a]
     Plexts.get_artifacts()
 end

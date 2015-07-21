@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["tfunato@gmail.com"]
   spec.summary       = %q{Ingress COMM API caller.}
   spec.description   = %q{Ingress COMM API caller.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/ailinykh/plexts"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

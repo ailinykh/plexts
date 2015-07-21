@@ -11,15 +11,14 @@ Ingress Intel Map API Caller
 ## Setup
 
 ```
-cp .env.sample .env
+cp intel.yml.sample intel.yml
 ```
 
-write .env
+Fill `intel.yml` with your intel credentials
 
 ## Using CLI
 
-
-```
+```Shell
 $ rake build
 plexts 0.0.1 built to pkg/plexts-0.0.1.gem.
 $ gem install pkg/plexts-0.0.1.gem
@@ -31,11 +30,38 @@ $ rbenb rehash # If necessary
 $ plexts -h
 Usage: plexts [options]
     -c, --console                    show all or faction, aleart messages
-    -e, --entity                     show portals infomation of JSON format
-        --lat VALUE                  portal Latitude
-        --lng VALUE                  portal Longitude
+    -e, --entity                     show entities infomation of JSON format
+        --minlat VALUE               south west area latitude
+        --minlng VALUE               south west area longitude
+        --maxlat VALUE               north east area latitude
+        --maxlng VALUE               north east area longitude
+    -p, --portal                     show portal infomation of JSON format
+        --guid VALUE                 portal guid
     -z VALUE                         map zoom level 1-20
     -a, --artifacts                  artifacts infomation of JSON format
+```
+
+## Using in Rails
+In your Gemfile:
+
+```Ruby
+gem 'plexts'
+```
+
+Don't forget to put `intel.yml` in root of your project
+
+```Ruby
+Plexts::get_artifacts
+# => {} 
+
+# COMM log
+Plexts.get_plexts(minLatE6, minLngE6, maxLatE6, maxLngE6, zoom)
+
+# Map entities
+Plexts.get_entities(minLatE6, minLngE6, maxLatE6, maxLngE6, zoom) 
+
+# Portal details
+Plexts.get_portal_details('d431c89010b4434da63e4b6070e6c414.12')
 ```
 
 ## Caution
