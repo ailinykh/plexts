@@ -55,7 +55,7 @@ Plexts::get_artifacts
 # => {} 
 
 # COMM log
-Plexts.get_plexts(minLatE6, minLngE6, maxLatE6, maxLngE6, zoom)
+Plexts.get_plexts(minLatE6, minLngE6, maxLatE6, maxLngE6)
 
 # Map entities
 Plexts.get_entities(minLatE6, minLngE6, maxLatE6, maxLngE6, zoom) 
